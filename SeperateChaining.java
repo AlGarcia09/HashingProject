@@ -9,6 +9,7 @@ import java.io.*;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeMap;
+import java.util.Random;
 //imports for reading files, exception, arraylist, and many more that can support any methods to diplay the output.
  
 public class SeperateChaining {
@@ -253,27 +254,57 @@ public class SeperateChaining {
     //Creating an output text file.
 
     public void searchItem(String key) {
-        long startTime = System.currentTimeMillis(); // Record start time
+        long startTime = System.nanoTime(); // Record start time
         int index = hashFunction(key); // Calculate hash index for the key
-        int probes = 1; // Initialize probe count for this search
+        int probes = 0; // Initialize probe count for this search
+    
+        // Search for the key in the hashtable
         for (String s : hashtable[index]) {
+            probes++; // Increment probe count for each element checked
             if (s.equals(key)) {
-                long endTime = System.currentTimeMillis(); // Record end time
+                long endTime = System.nanoTime(); // Record end time
                 long elapsedTime = endTime - startTime; // Calculate elapsed time
-                // System.out.println("Item found at index " + index);
-                System.out.println("Time taken for search: " + elapsedTime + " milliseconds");
+                System.out.println("Word searching: " + key);
+                System.out.println("Time taken for search: " + elapsedTime + " nanoseconds");
                 System.out.println("Number of probes used: " + probes);
                 return; // Item found, exit the method
             }
-            probes++; // Increment probe count for each element checked
         }
+    
         // If item is not found
-        long endTime = System.currentTimeMillis(); // Record end time
+        long endTime = System.nanoTime(); // Record end time
         long elapsedTime = endTime - startTime; // Calculate elapsed time
+        System.out.println("Word searching: " + key);
         System.out.println("Item not found");
-        System.out.println("Time taken for search: " + elapsedTime + " milliseconds");
+        System.out.println("Time taken for search: " + elapsedTime + " nanoseconds");
         System.out.println("Number of probes used: " + probes);
     }
+    
+
+
+    public void searchItemRandomly() {
+        Random random = new Random();
+        int randomIndex = random.nextInt(size); // Generate a random index within the hashtable size
+    
+        if (hashtable[randomIndex].isEmpty()) {
+            System.out.println("No items at index " + randomIndex);
+            return;
+        }
+    
+        int randomKeyIndex = random.nextInt(hashtable[randomIndex].size()); // Generate a random index within the ArrayList at the random index
+    
+        String randomKey = hashtable[randomIndex].get(randomKeyIndex); // Get a random key from the ArrayList
+    
+        searchItem(randomKey); // Perform a search operation on the randomly selected key
+    }
+
+    public void repeatSearch(int times) {
+        for (int i = 1; i <= times; i++) {
+            System.out.println("Search attempt " + i + ":");
+            searchItemRandomly();;
+            System.out.println(); // Add a blank line for better readability between search attempts
+        }
+    }    
 
     public static void main(String[] args) {
         SeperateChaining hash = new SeperateChaining(78);
@@ -283,17 +314,22 @@ public class SeperateChaining {
 
         // hash.displayHash();
 
-        System.out.println("Distribution of Hash Counts:");
-        hash.plotDistribution();
+        
 
         hash.writeOutputToFile("output.txt");
         System.out.println("Output written to file 'output.txt'");
 
-        System.out.println("Probe Counts: ");
+        // System.out.println("Distribution of Hash Counts:");
+        // hash.plotDistribution();
+        // System.out.println("Probe Counts: ");
         
-        hash.plotProbeCounts();
+        // hash.plotProbeCounts();
 
-        hash.searchItem("pectoriloquous");
+        // hash.searchItem("pectoriloquous");
+
+        // hash.searchItemRandomly();
+
+        hash.repeatSearch(20);;
                 
     }
 }
