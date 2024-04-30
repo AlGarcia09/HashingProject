@@ -29,7 +29,7 @@ public class SeperateChaining {
             probeCounts[i] = 0;
         }
     }
-
+    //Creating the hash function
     public int hashFunction(String key) {
         int hash = 5381;
         for (char c : key.toCharArray()) {
@@ -37,7 +37,7 @@ public class SeperateChaining {
         }
         return Math.abs(hash) % size; // Ensure hash value is positive and within table size
     }
-    //Creating the hash function
+   
 
     public void insertItem(String key) {
         int index = hashFunction(key); // Find the hash index for key
@@ -50,8 +50,8 @@ public class SeperateChaining {
         hashCounts[index]++; // Increment hash count for this index
         probeCounts[index] += probes; // Increment probe count for this index
     }
-    //Inserting items
 
+    //Counting the probes.
     public void plotProbeCounts() {
         // long startTime = System.currentTimeMillis(); // Record start time
         int totalProbes = 0; // Initialize total probes
@@ -104,8 +104,7 @@ public class SeperateChaining {
         //double averageProbe = totalElements == 0 ? 0 : (double) totalProbes / totalElements;
         //System.out.println("Average probe: " + averageProbe);
     }            
-    //Counting the probes.
-
+    //Hash counting
     public void plotDistribution() {
         int[] distribution = new int[size]; // Array to store distribution of hash counts
         for (int i = 0; i < size; i++) {
@@ -145,7 +144,7 @@ public class SeperateChaining {
         }
     }
     
-
+    //display all the words from the text file.
     public void displayHash() {
         try (PrintWriter writer = new PrintWriter(new FileWriter("hash_table_contents.txt"))) {
             for (char c = 'a'; c <= 'z'; c++) {
@@ -193,8 +192,8 @@ public class SeperateChaining {
             e.printStackTrace();
         }
     }    
-    //Reading files from the text file.
-
+    
+    //Creating an output text file.
     public void writeOutputToFile(String filename) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
             // Write hash table contents
@@ -251,8 +250,7 @@ public class SeperateChaining {
             e.printStackTrace();
         }
     }    
-    //Creating an output text file.
-
+    //Searching operation for word in the hash table.
     public void searchItem(String key) {
         long startTime = System.nanoTime(); // Record start time
         int index = hashFunction(key); // Calculate hash index for the key
@@ -263,9 +261,9 @@ public class SeperateChaining {
             probes++; // Increment probe count for each element checked
             if (s.equals(key)) {
                 long endTime = System.nanoTime(); // Record end time
-                long elapsedTime = endTime - startTime; // Calculate elapsed time
+                double elapsedTime = (endTime - startTime) / 1_000_000.0; // Calculate elapsed time in milliseconds
                 System.out.println("Word searching: " + key);
-                System.out.println("Time taken for search: " + elapsedTime + " nanoseconds");
+                System.out.println("Time taken for search: " + elapsedTime + " milliseconds");
                 System.out.println("Number of probes used: " + probes);
                 return; // Item found, exit the method
             }
@@ -273,15 +271,14 @@ public class SeperateChaining {
     
         // If item is not found
         long endTime = System.nanoTime(); // Record end time
-        long elapsedTime = endTime - startTime; // Calculate elapsed time
+        double elapsedTime = (endTime - startTime) / 1_000_000.0; // Calculate elapsed time in milliseconds
         System.out.println("Word searching: " + key);
         System.out.println("Item not found");
-        System.out.println("Time taken for search: " + elapsedTime + " nanoseconds");
+        System.out.println("Time taken for search: " + elapsedTime + " milliseconds");
         System.out.println("Number of probes used: " + probes);
     }
-    
 
-
+    //Random search operation
     public void searchItemRandomly() {
         Random random = new Random();
         int randomIndex = random.nextInt(size); // Generate a random index within the hashtable size
@@ -297,15 +294,15 @@ public class SeperateChaining {
     
         searchItem(randomKey); // Perform a search operation on the randomly selected key
     }
-
+    //Reapeat the amount of search
     public void repeatSearch(int times) {
         for (int i = 1; i <= times; i++) {
             System.out.println("Search attempt " + i + ":");
-            searchItemRandomly();;
+            searchItemRandomly(); // Call searchItemRandomly instead of searchItem
             System.out.println(); // Add a blank line for better readability between search attempts
         }
     }    
-
+    
     public static void main(String[] args) {
         SeperateChaining hash = new SeperateChaining(78);
 
@@ -329,7 +326,7 @@ public class SeperateChaining {
 
         // hash.searchItemRandomly();
 
-        hash.repeatSearch(20);;
+        hash.repeatSearch(10);;
                 
     }
 }
