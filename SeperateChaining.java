@@ -1,5 +1,3 @@
-//Alan Garcia, 04/09/24, creating a hashing project to display characters and strings in seperate chaining. 
-/*Seperate chaining: In hashing there is a hash function that maps keys to some values. But these hashing functions may lead to a collision that is two or more keys are mapped to same value. Chain hashing avoids collision. The idea is to make each cell of hash table point to a linked list of records that have same hash function value.*/
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
