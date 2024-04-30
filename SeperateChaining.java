@@ -1,7 +1,3 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.io.*;
 import java.util.Timer;
@@ -193,61 +189,64 @@ public class SeperateChaining {
     
     //Creating an output text file.
     public void writeOutputToFile(String filename) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
-            // Write hash table contents
-            writer.println("Hash Table Contents:");
-            // Iterate over lowercase letters
-            for (char c = 'a'; c <= 'z'; c++) {
-                writer.print(c + " - ");
-                boolean firstItem = true;
-                for (int i = 0; i < size; i++) {
-                    for (String s : hashtable[i]) {
-                        if (s.charAt(0) == c) {
-                            if (!firstItem) {
-                                writer.print(" --> ");
-                            }
-                            writer.print(s);
-                            firstItem = false;
-                        }
-                    }
-                }
-                writer.println();
-            }
-    
-            // Iterate over uppercase letters
-            for (char c = 'A'; c <= 'Z'; c++) {
-                writer.print(c + " - ");
-                boolean firstItem = true;
-                for (int i = 0; i < size; i++) {
-                    for (String s : hashtable[i]) {
-                        if (s.charAt(0) == c) {
-                            if (!firstItem) {
-                                writer.print(" --> ");
-                            }
-                            writer.print(s);
-                            firstItem = false;
-                        }
-                    }
-                }
-                writer.println();
-            }
-    
-            // Write distribution of hash counts
-            writer.println("\nDistribution of Hash Counts:");
-            int[] distribution = new int[size]; // Array to store distribution of hash counts
+    try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
+        // Write hash table contents
+        writer.println("Hash Table Contents:");
+
+        // Iterate over lowercase letters
+        for (char c = 'a'; c <= 'z'; c++) {
+            writer.print(c + " - ");
+            boolean firstItem = true;
             for (int i = 0; i < size; i++) {
                 for (String s : hashtable[i]) {
-                    int index = hashFunction(s); // Calculate hash index for the string
-                    distribution[index]++; // Increment hash count for this index
+                    if (s.charAt(0) == c) {
+                        if (!firstItem) {
+                            writer.print(" --> ");
+                        }
+                        writer.print(s);
+                        firstItem = false;
+                    }
                 }
             }
-            for (int i = 0; i < size; i++) {
-                writer.println(" Index " + i + ": " + distribution[i]);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+            writer.println();
         }
-    }    
+
+        // Iterate over uppercase letters
+        for (char c = 'A'; c <= 'Z'; c++) {
+            writer.print(c + " - ");
+            boolean firstItem = true;
+            for (int i = 0; i < size; i++) {
+                for (String s : hashtable[i]) {
+                    if (s.charAt(0) == c) {
+                        if (!firstItem) {
+                            writer.print(" --> ");
+                        }
+                        writer.print(s);
+                        firstItem = false;
+                    }
+                }
+            }
+            writer.println();
+        }
+
+        // Write distribution of hash counts
+        writer.println("\nDistribution of Hash Counts:");
+        for (int i = 0; i < size; i++) {
+            writer.println("Index " + i + ": " + hashCounts[i]);
+        }
+
+        // Write words and the corresponding number of probes used
+        writer.println("\nWords and Number of Probes:");
+        for (int i = 0; i < size; i++) {
+            for (String word : hashtable[i]) {
+                writer.println(word + ": " + probeCounts[i]);
+            }
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+    
     //Searching operation for word in the hash table.
     public void searchItem(String key) {
         long startTime = System.nanoTime(); // Record start time
@@ -259,9 +258,9 @@ public class SeperateChaining {
             probes++; // Increment probe count for each element checked
             if (s.equals(key)) {
                 long endTime = System.nanoTime(); // Record end time
-                double elapsedTime = (endTime - startTime) / 1_000_000.0; // Calculate elapsed time in milliseconds
+                long elapsedTime = (endTime - startTime); // Calculate elapsed time in milliseconds
                 System.out.println("Word searching: " + key);
-                System.out.println("Time taken for search: " + elapsedTime + " milliseconds");
+                System.out.println("Time taken for search: " + elapsedTime + " ns");
                 System.out.println("Number of probes used: " + probes);
                 return; // Item found, exit the method
             }
@@ -269,10 +268,10 @@ public class SeperateChaining {
     
         // If item is not found
         long endTime = System.nanoTime(); // Record end time
-        double elapsedTime = (endTime - startTime) / 1_000_000.0; // Calculate elapsed time in milliseconds
+        long elapsedTime = (endTime - startTime); // Calculate elapsed time in milliseconds
         System.out.println("Word searching: " + key);
         System.out.println("Item not found");
-        System.out.println("Time taken for search: " + elapsedTime + " milliseconds");
+        System.out.println("Time taken for search: " + elapsedTime + " ns");
         System.out.println("Number of probes used: " + probes);
     }
 
@@ -302,7 +301,7 @@ public class SeperateChaining {
     }    
     
     public static void main(String[] args) {
-        SeperateChaining hash = new SeperateChaining(78);
+        SeperateChaining hash = new SeperateChaining(79);
 
 
         hash.readKeysFromFile("words.txt");
@@ -324,7 +323,7 @@ public class SeperateChaining {
 
         // hash.searchItemRandomly();
 
-        hash.repeatSearch(10);;
+        hash.repeatSearch(50);;
                 
     }
 }
