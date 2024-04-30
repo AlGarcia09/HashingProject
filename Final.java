@@ -12,6 +12,7 @@ public class Final {
 
     static Hashtable<Integer, String> hash = new Hashtable<>();
     static Hashtable<Integer, Integer> hashCount = new Hashtable<>();
+    static int totalProbes = 0;
 
     public static void Qprobe(String word) {
 
@@ -54,6 +55,30 @@ public class Final {
         }
     }
 
+    public static void writeCountTxt(Hashtable<Integer, Integer> map) {
+        System.out.println("Writing txt");
+        try {
+            FileWriter myWriter = new FileWriter("outputC.txt");
+            map.forEach((key, value) -> {
+                try {
+                    myWriter.write(value + "\n");
+                } catch (IOException e) {
+
+                    e.printStackTrace();
+                }
+            });
+            myWriter.close();
+
+        } catch (IOException e) {
+            System.out.println("Failed to write to the file");
+            e.printStackTrace();
+        }
+    }
+
+    public static String Search(Integer key) {
+        return hash.get(key);
+    }
+
     public static void main(String[] args) throws FileNotFoundException {
         File txt = new File("words.txt");
         Scanner sc = new Scanner(txt);
@@ -63,11 +88,112 @@ public class Final {
             // System.out.println(tmp);
             Qprobe(tmp);
         }
+        // final Integer totalProbes;
+        hashCount.forEach((key, value) -> {
+
+            totalProbes += value;
+        });
+        System.out.println("total probes: " + totalProbes);
         System.out.println();
         writeTxt(hash);
+        writeCountTxt(hashCount);
         System.out.println();
         long end = System.currentTimeMillis();
         System.out.println("Finished in " + (end - start) + "ms.");
+        System.out.println();
+        int i = 0;
 
+        long searchStart = System.nanoTime();
+        Integer probes = 0;
+        while (i < 10) {
+            Integer num = (int) (Math.random() * hash.size() + 1);
+            if (hash.containsKey(num)) {
+                System.out.println(Search(num));
+                probes += hashCount.get(num);
+                i++;
+            }
+
+        }
+        long searchEnd = System.nanoTime();
+        System.out.println();
+        System.out.println("Total time to complete 10 searchs is " + (searchEnd - searchStart) + "ns");
+        System.out.println("The total number of probes used is " + probes);
+        System.out.println();
+
+        i = 0;
+
+        searchStart = System.nanoTime();
+        probes = 0;
+        while (i < 20) {
+            Integer num = (int) (Math.random() * hash.size() + 1);
+            if (hash.containsKey(num)) {
+                System.out.println(Search(num));
+                probes += hashCount.get(num);
+                i++;
+            }
+
+        }
+        searchEnd = System.nanoTime();
+        System.out.println();
+        System.out.println("Total time to complete 20 search is " + (searchEnd - searchStart) + "ns");
+        System.out.println("The total number of probes used is " + probes);
+        System.out.println();
+
+        i = 0;
+
+        searchStart = System.nanoTime();
+        probes = 0;
+        while (i < 30) {
+            Integer num = (int) (Math.random() * hash.size() + 1);
+            if (hash.containsKey(num)) {
+                System.out.println(Search(num));
+                probes += hashCount.get(num);
+                i++;
+            }
+
+        }
+        searchEnd = System.nanoTime();
+        System.out.println();
+        System.out.println("Total time to complete 30 search is " + (searchEnd - searchStart) + "ns");
+        System.out.println("The total number of probes used is " + probes);
+        System.out.println();
+
+        i = 0;
+
+        searchStart = System.nanoTime();
+        probes = 0;
+        while (i < 40) {
+            Integer num = (int) (Math.random() * hash.size() + 1);
+            if (hash.containsKey(num)) {
+                System.out.println(Search(num));
+                probes += hashCount.get(num);
+                i++;
+            }
+
+        }
+        searchEnd = System.nanoTime();
+        System.out.println();
+        System.out.println("Total time to complete 40 search is " + (searchEnd - searchStart) + "ns");
+        System.out.println("The total number of probes used is " + probes);
+        System.out.println();
+
+        i = 0;
+
+        searchStart = System.nanoTime();
+        probes = 0;
+        while (i < 50) {
+            Integer num = (int) (Math.random() * hash.size() + 1);
+            if (hash.containsKey(num)) {
+                System.out.println(Search(num));
+                probes += hashCount.get(num);
+                i++;
+            }
+
+        }
+        searchEnd = System.nanoTime();
+        System.out.println();
+        System.out.println("Total time to complete 50 search is " + (searchEnd - searchStart) + "ns");
+        System.out.println("The total number of probes used is " + probes);
+        System.out.println();
     }
 }
