@@ -5,16 +5,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Hashtable;
 
-public class Linear {
+public class Linear2 {
 
-    static Hashtable<Integer, String> ht = new Hashtable<>(666511);
-    static Hashtable<Integer, Integer> htCount = new Hashtable<>(666511);
-    static int probesTotal = 0;
+    static Hashtable<Integer, String> ht = new Hashtable<>(933151);
+    static Hashtable<Integer, Integer> htCount = new Hashtable<>(933151);
 
     public static void linear(String word) {
 
         Integer value = 0;
-        value = word.hashCode() % 666511;
+        value = word.hashCode() % 933151;
         if (value < 0) {
             value *= -1;
         }
@@ -61,16 +60,11 @@ public class Linear {
             String temp = sc.next();
             linear(temp);
         }
-        htCount.forEach((key, value) -> {
-
-            probesTotal += value;
-        });
-        // System.out.println("All words have be sorted");
+        System.out.println("All words have be sorted");
         // System.out.println(ht);
         // System.out.println("Cxollisions at each position: " + htCount);
         long end = System.currentTimeMillis();
         System.out.println("Total time to complete probing is " + (end - start) + "ms");
-        System.out.println("Total probes used are " + probesTotal);
 
         int i = 0;
         long searchStart = System.nanoTime();
@@ -98,12 +92,11 @@ public class Linear {
                 probes += htCount.get(num);
                 i++;
             }
-        }
 
+        }
         searchEnd = System.nanoTime();
         System.out.println("Total time to complete 10 searchs is " + (searchEnd - searchStart) + "ns");
         System.out.println("The total number of probes used is " + probes);
-        System.out.println("Total amount of probes used is " + probesTotal);
 
         i = 0;
         searchStart = System.nanoTime();
