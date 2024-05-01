@@ -1,8 +1,6 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class DoubleHashing {
@@ -117,16 +115,13 @@ public class DoubleHashing {
     }
 
     public void displayHash() {
-        try (PrintWriter writer = new PrintWriter(new FileWriter("hash_table_contents.txt"))) {
-            for (int i = 0; i < size; i++) {
-                if (used[i]) {
-                    writer.println(i + " - " + hashtable[i] + " (Probe Count: " + probeCounts[i] + ")");
-                }
+        for (int i = 0; i < size; i++) {
+            if (used[i]) {
+                System.out.println(i + " - " + hashtable[i] + " (Probe Count: " + probeCounts[i] + ")");
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
+    
 
     public void readKeysFromFile(String filename) {
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
